@@ -1,4 +1,4 @@
-package com.coupons.clients.facade;
+package com.coupons.facade;
 
 import java.util.List;
 

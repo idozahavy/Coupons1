@@ -1,4 +1,4 @@
-package com.coupons.clients.facade;
+package com.coupons.facade;
 
 import java.util.List;
 
@@ -39,10 +39,14 @@ public class CompanyFacade extends Facade {
 		}
 	}
 
-	public void deleteCoupon(Coupon coupon) {
-		if (coupon.getCompanyId() == companyId) {
-			couponsDBDAO.deleteCouponPurchases(coupon.getId());
-			couponsDBDAO.deleteCoupon(coupon.getId());
+	public void deleteCoupon(int couponId) {
+		Coupon dbCoupon = couponsDBDAO.getOneCoupon(couponId);
+		if (dbCoupon == null) {
+			return;
+		}
+		if (dbCoupon.getCompanyId() == companyId) {
+			couponsDBDAO.deleteCouponPurchases(couponId);
+			couponsDBDAO.deleteCoupon(couponId);
 		}
 
 	}

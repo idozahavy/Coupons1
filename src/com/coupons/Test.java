@@ -12,6 +12,7 @@ import com.coupons.db.DatabaseManager;
 import com.coupons.dbdao.CompaniesDBDAO;
 import com.coupons.dbdao.CouponsDBDAO;
 import com.coupons.dbdao.CustomerDBDAO;
+import com.coupons.tests.AllTests;
 import com.coupons.tests.DBDAOTests;
 import com.coupons.tests.dbdao.CategoryDBDAOTest;
 import com.coupons.tests.dbdao.CompaniesDBDAOTest;
@@ -34,7 +35,7 @@ public class Test {
 		printAllCoupons();
 		printAllCompanies();
 
-		DBDAOTests.main(args);
+		AllTests.main(args);
 		
 		ConnectionPool.getInstance().closeAllConnection();
 	}
@@ -88,8 +89,8 @@ public class Test {
 	public static void addAllCoupons() {
 		CouponsDBDAO couponsDBDAO = new CouponsDBDAO();
 		Coupon coupon1 = new Coupon(0, 1, Category.Electricity, "first coupon", "first", Date.valueOf("2020-08-08"),
-				Date.valueOf("2020-12-16"), 50, 99.90, "blop");
-		Coupon coupon2 = new Coupon(0, 1, Category.Electricity, "second coupon", "gro", Date.valueOf("2020-09-08"),
+				Date.valueOf("2020-12-16"), 50, 10.90, "blop");
+		Coupon coupon2 = new Coupon(0, 1, Category.Computers, "second coupon", "gro", Date.valueOf("2020-09-08"),
 				Date.valueOf("2020-12-18"), 40, 50.90, "blop");
 		Coupon coupon3 = new Coupon(0, 2, Category.AI, "third coupon", "shrik", Date.valueOf("2020-10-08"),
 				Date.valueOf("2020-12-10"), 30, 69.90, "blop");

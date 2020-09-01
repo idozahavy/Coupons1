@@ -1,4 +1,4 @@
-package com.coupons.clients.facade;
+package com.coupons.facade;
 
 import com.coupons.dbdao.CompaniesDBDAO;
 import com.coupons.dbdao.CouponsDBDAO;

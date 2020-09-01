@@ -8,6 +8,10 @@ import com.coupons.tests.dbdao.CustomersDBDAOTest;
 public class DBDAOTests {
 
 	public static void main(String[] args) {
+		System.out.println();
+		System.out.println(Art.stringToArtH1("- DBDAO Tests -".toUpperCase()));
+		System.out.println();
+		
 		CategoryDBDAOTest.main(args);
 		CompaniesDBDAOTest.main(args);
 		CouponsDBDAOTest.main(args);

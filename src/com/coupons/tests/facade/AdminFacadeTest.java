@@ -4,8 +4,7 @@ import java.util.List;
 
 import com.coupons.beans.Company;
 import com.coupons.beans.Customer;
-import com.coupons.clients.facade.AdminFacade;
-import com.coupons.dbdao.CustomerDBDAO;
+import com.coupons.facade.AdminFacade;
 import com.coupons.tests.Art;
 
 public class AdminFacadeTest {
@@ -42,6 +41,14 @@ public class AdminFacadeTest {
 		List<Company> allCompanies = facade.getAllCompanies();
 		System.out.println(allCompanies);
 		Company tempCompany = allCompanies.get(allCompanies.size() - 1);
+		
+		System.out.println();
+		System.out.println(Art.padTo80Stars(" Add Company (Fail - exists) "));
+		System.out.print("Before - ");
+		System.out.println(facade.getAllCompanies());
+		facade.addCompany(new Company("adminCompany", "bjdfjk", "hashcodedpass"));
+		System.out.print(" After - ");
+		System.out.println(facade.getAllCompanies());
 
 		System.out.println();
 		System.out.println(Art.padTo80Stars(" Get One Company "));
