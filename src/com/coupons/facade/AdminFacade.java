@@ -6,7 +6,7 @@ import com.coupons.beans.Company;
 import com.coupons.beans.Coupon;
 import com.coupons.beans.Customer;
 
-public class AdminFacade extends Facade {
+public class AdminFacade extends ClientFacade {
 
 	public boolean login(String email, String password) {
 		return email.equals("admin@admin.com") && password.equals("admin");

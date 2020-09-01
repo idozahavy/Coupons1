@@ -3,21 +3,12 @@ package com.coupons;
 import java.sql.Date;
 import java.util.List;
 
-import com.coupons.beans.Category;
-import com.coupons.beans.Company;
-import com.coupons.beans.Coupon;
-import com.coupons.beans.Customer;
-import com.coupons.db.ConnectionPool;
-import com.coupons.db.DatabaseManager;
-import com.coupons.dbdao.CompaniesDBDAO;
-import com.coupons.dbdao.CouponsDBDAO;
-import com.coupons.dbdao.CustomerDBDAO;
+import com.coupons.beans.*;
+import com.coupons.db.*;
+import com.coupons.dbdao.*;
+import com.coupons.facade.AdminFacade;
+import com.coupons.login.*;
 import com.coupons.tests.AllTests;
-import com.coupons.tests.DBDAOTests;
-import com.coupons.tests.dbdao.CategoryDBDAOTest;
-import com.coupons.tests.dbdao.CompaniesDBDAOTest;
-import com.coupons.tests.dbdao.CouponsDBDAOTest;
-import com.coupons.tests.dbdao.CustomersDBDAOTest;
 
 public class Test {
 
@@ -35,7 +26,11 @@ public class Test {
 		printAllCoupons();
 		printAllCompanies();
 
-		AllTests.main(args);
+//		AllTests.main(args);
+		
+		AdminFacade facade = (AdminFacade) LoginManager.login("admin@admin.com", "admin", ClientType.ADMINISTRATOR);
+		
+		System.out.println(facade.getAllCompanies());
 		
 		ConnectionPool.getInstance().closeAllConnection();
 	}

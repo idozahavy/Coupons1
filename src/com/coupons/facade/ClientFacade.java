@@ -4,12 +4,12 @@ import com.coupons.dbdao.CompaniesDBDAO;
 import com.coupons.dbdao.CouponsDBDAO;
 import com.coupons.dbdao.CustomerDBDAO;
 
-public abstract class Facade {
+public abstract class ClientFacade {
 	protected CouponsDBDAO couponsDBDAO;
 	protected CompaniesDBDAO companiesDBDAO;
 	protected CustomerDBDAO customerDBDAO;
 	
-	public Facade() {
+	public ClientFacade() {
 		couponsDBDAO = new CouponsDBDAO();
 		companiesDBDAO = new CompaniesDBDAO();
 		customerDBDAO = new CustomerDBDAO();

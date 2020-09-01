@@ -1,6 +1,6 @@
 package com.coupons.facade;
 
-public class CustomerFacade extends Facade {
+public class CustomerFacade extends ClientFacade {
 
 	private int customerId;
 	

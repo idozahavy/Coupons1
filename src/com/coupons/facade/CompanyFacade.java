@@ -6,7 +6,7 @@ import com.coupons.beans.Category;
 import com.coupons.beans.Company;
 import com.coupons.beans.Coupon;
 
-public class CompanyFacade extends Facade {
+public class CompanyFacade extends ClientFacade {
 
 	private int companyId;
 
