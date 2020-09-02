@@ -4,12 +4,15 @@ import java.util.List;
 
 import com.coupons.beans.Company;
 import com.coupons.beans.Customer;
+import com.coupons.exceptions.DataManipulationException;
+import com.coupons.exceptions.DetailDuplicationException;
+import com.coupons.exceptions.WrongIdException;
 import com.coupons.facade.AdminFacade;
 import com.coupons.tests.Art;
 
 public class AdminFacadeTest {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws WrongIdException {
 		System.out.println();
 		System.out.println(Art.stringToArtH1("AdminFacade Test"));
 
@@ -36,17 +39,25 @@ public class AdminFacadeTest {
 		System.out.println(Art.padTo80Stars(" Add Company "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCompanies());
-		facade.addCompany(new Company("adminCompany", "bjdfjk", "hashcodedpass"));
+		try {
+			facade.addCompany(new Company("adminCompany", "bjdfjk", "hashcodedpass"));
+		} catch (DetailDuplicationException e) {
+			e.printStackTrace();
+		}
 		System.out.print(" After - ");
 		List<Company> allCompanies = facade.getAllCompanies();
 		System.out.println(allCompanies);
 		Company tempCompany = allCompanies.get(allCompanies.size() - 1);
-		
+
 		System.out.println();
 		System.out.println(Art.padTo80Stars(" Add Company (Fail - exists) "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCompanies());
-		facade.addCompany(new Company("adminCompany", "bjdfjk", "hashcodedpass"));
+		try {
+			facade.addCompany(new Company("adminCompany", "bjdfjk", "hashcodedpass"));
+		} catch (DetailDuplicationException e) {
+			System.out.println("Error Thrown - " + e.getMessage());
+		}
 		System.out.print(" After - ");
 		System.out.println(facade.getAllCompanies());
 
@@ -59,72 +70,122 @@ public class AdminFacadeTest {
 		System.out.print("Before - ");
 		System.out.println(facade.getOneCompany(tempCompany.getId()));
 		tempCompany.setEmail("company_new2_Email");
-		facade.updateCompany(tempCompany);
-		System.out.print(" After - ");
-		System.out.println(facade.getOneCompany(tempCompany.getId()));
-		
-		System.out.println();
-		System.out.println(Art.padTo80Stars(" Update Company (email, name) (Fail) "));
-		System.out.print("Before - ");
-		System.out.println(facade.getOneCompany(tempCompany.getId()));
-		tempCompany.setEmail("sabba.com_Email");
-		tempCompany.setName("sucks to be me");
-		facade.updateCompany(tempCompany);
+		try {
+			facade.updateCompany(tempCompany);
+		} catch (DataManipulationException e) {
+			e.printStackTrace();
+		}
 		System.out.print(" After - ");
 		System.out.println(facade.getOneCompany(tempCompany.getId()));
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Delete Company "));
+		System.out.println(Art.padTo80Stars(" Update Company (email, name) (Fail - cannot change name) "));
+		System.out.print("Before - ");
+		System.out.println(facade.getOneCompany(tempCompany.getId()));
+		tempCompany.setEmail("sabba.com_Email");
+		tempCompany.setName("sucks to be me");
+		try {
+			facade.updateCompany(tempCompany);
+		} catch (DataManipulationException e) {
+			System.out.println("Error Thrown - " + e.getMessage());
+		}
+		System.out.print(" After - ");
+		System.out.println(facade.getOneCompany(tempCompany.getId()));
+
+		System.out.println();
+		System.out.println(Art.padTo80Stars(" Delete Company (Fail - id do not exist "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCompanies());
-		facade.deleteCompany(tempCompany.getId());
+		try {
+			facade.deleteCompany(-1);
+		} catch (WrongIdException e) {
+			System.out.println("Error Thrown - " + e.getMessage());
+		}
 		System.out.print(" After - ");
 		System.out.println(facade.getAllCompanies());
 		
-		
-	
-		
+		System.out.println();
+		System.out.println(Art.padTo80Stars(" Delete Company "));
+		System.out.print("Before - ");
+		System.out.println(facade.getAllCompanies());
+		try {
+			facade.deleteCompany(tempCompany.getId());
+		} catch (WrongIdException e) {
+			e.printStackTrace();
+		}
+		System.out.print(" After - ");
+		System.out.println(facade.getAllCompanies());
+
 		System.out.println();
 		System.out.println(Art.padTo80Stars(" Add Customer "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCustomers());
-		facade.addCustomer(new Customer("firtstff", "mooooo", "shishkabab@fff.dd", "irdontrcare"));
+		try {
+			facade.addCustomer(new Customer("firtstff", "mooooo", "shishkabab@fff.dd", "irdontrcare"));
+		} catch (DetailDuplicationException e) {
+			e.printStackTrace();
+		}
 		System.out.print(" After - ");
 		List<Customer> allCustomers = facade.getAllCustomers();
 		System.out.println(allCustomers);
 		Customer tempCustomer = allCustomers.get(allCustomers.size() - 1);
-		
+
 		System.out.println();
 		System.out.println(Art.padTo80Stars(" Add Customer (Fail - existing email) "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCustomers());
-		facade.addCustomer(new Customer("firtstff", "mooooo", "shishkabab@fff.dd", "irdontrcare"));
+		try {
+			facade.addCustomer(new Customer("firtstff", "mooooo", "shishkabab@fff.dd", "irdontrcare"));
+		} catch (DetailDuplicationException e) {
+			System.out.println("Error Thrown - " + e.getMessage());
+		}
 		System.out.print(" After - ");
 		System.out.println(facade.getAllCustomers());
 
 		System.out.println();
 		System.out.println(Art.padTo80Stars(" Get One Customer "));
 		System.out.println(facade.getOneCustomer(tempCustomer.getId()));
-		
+
 		System.out.println();
 		System.out.println(Art.padTo80Stars(" Update Customer (email, firstname) "));
 		System.out.print("Before - ");
 		System.out.println(facade.getOneCustomer(tempCustomer.getId()));
 		tempCustomer.setEmail("company_new2_Email");
 		tempCustomer.setFirstName("cust1name504");
-		facade.updateCustomer(tempCustomer);
+		try {
+			facade.updateCustomer(tempCustomer);
+		} catch (WrongIdException e) {
+			System.out.println("Error Thrown - " + e.getMessage());
+		} catch (DataManipulationException e) {
+			System.out.println("Error Thrown - " + e.getMessage());
+		}
 		System.out.print(" After - ");
 		System.out.println(facade.getOneCustomer(tempCustomer.getId()));
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Delete Customer "));
+		System.out.println(Art.padTo80Stars(" Delete Customer (Fail , no such id) "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCustomers());
-		facade.deleteCustomer(tempCustomer.getId());
+		try {
+			facade.deleteCustomer(-1);
+		} catch (WrongIdException e) {
+			System.out.println("Error Thrown - " + e.getMessage());
+		}
 		System.out.print(" After - ");
 		System.out.println(facade.getAllCustomers());
 		
-		
+		System.out.println();
+		System.out.println(Art.padTo80Stars(" Delete Customer "));
+		System.out.print("Before - ");
+		System.out.println(facade.getAllCustomers());
+		try {
+			facade.deleteCustomer(tempCustomer.getId());
+		} catch (WrongIdException e) {
+			e.printStackTrace();
+		}
+		System.out.print(" After - ");
+		System.out.println(facade.getAllCustomers());
+
 	}
 
 }

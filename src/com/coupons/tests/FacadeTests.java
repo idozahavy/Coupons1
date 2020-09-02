@@ -1,5 +1,6 @@
 package com.coupons.tests;
 
+import com.coupons.exceptions.WrongIdException;
 import com.coupons.tests.facade.AdminFacadeTest;
 import com.coupons.tests.facade.CompanyFacadeTest;
 
@@ -10,8 +11,16 @@ public class FacadeTests {
 		System.out.println(Art.stringToArtH1("- Facade Tests -".toUpperCase()));
 		System.out.println();
 		
-		AdminFacadeTest.main(args);
-		CompanyFacadeTest.main(args);
+		try {
+			AdminFacadeTest.main(args);
+		} catch (WrongIdException e) {
+			e.printStackTrace();
+		}
+		try {
+			CompanyFacadeTest.main(args);
+		} catch (WrongIdException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

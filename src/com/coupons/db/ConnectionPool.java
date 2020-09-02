@@ -11,13 +11,15 @@ public class ConnectionPool {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			System.out.println("Error - " + e.getMessage());
+			System.err.println("Loading JDBC Driver Failed!!!");
+			e.printStackTrace();
+			System.err.println("Loading JDBC Driver Failed!!!");
 		}
 	}
 
 	private Stack<Connection> connections = new Stack<>();
 
-	private static ConnectionPool instance = null;// = new ConnectionPool();
+	private static ConnectionPool instance = null;
 
 	private ConnectionPool() {
 		for (int i = 1; i <= 10; i++) {
@@ -63,23 +65,22 @@ public class ConnectionPool {
 		}
 	}
 
-	public <T> T invoke(ConnectionMethod<T> method) {
-		Connection conn;
+	@SuppressWarnings("unused")
+	public static <T> T instanceInvoke(ConnectionMethod<T> method) {
+		Connection conn = null;
 		T object = null;
 		try {
-			conn = getConnection();
+			conn = getInstance().getConnection();
 			object = method.run(conn);
-			returnConnection(conn);
+			getInstance().returnConnection(conn);
 		} catch (InterruptedException e) {
+			if (conn != null) {
+				getInstance().returnConnection(conn);
+			}
 			System.out.println("Could not connect to database , message - " + e.getMessage());
 		}
 		return object;
 	}
-
-	public static <T> T instanceInvoke(ConnectionMethod<T> method) {
-		return getInstance().invoke(method);
-	}
-
 
 	public void closeAllConnection() throws InterruptedException {
 		synchronized (connections) {

@@ -6,14 +6,17 @@ import java.util.List;
 import com.coupons.beans.Category;
 import com.coupons.beans.Coupon;
 import com.coupons.dbdao.CouponsDBDAO;
+import com.coupons.exceptions.DataManipulationException;
+import com.coupons.exceptions.DetailDuplicationException;
+import com.coupons.exceptions.WrongIdException;
 import com.coupons.facade.CompanyFacade;
 import com.coupons.tests.Art;
 
 public class CompanyFacadeTest {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws WrongIdException {
 		System.out.println();
-		System.out.println(Art.stringToArtH1("AdminFacade Test"));
+		System.out.println(Art.stringToArtH1("CompanyFacade Test"));
 
 		System.out.println();
 		CompanyFacade facade = new CompanyFacade();
@@ -47,8 +50,12 @@ public class CompanyFacadeTest {
 		System.out.println(Art.padTo80Stars(" Add Coupon "));
 		System.out.print("Before - ");
 		System.out.println(facade.getCompanyCoupons());
-		facade.addCoupon(new Coupon(facade.getCompanyDetails().getId(), Category.Technology, "couptitle", "desc434",
-				Date.valueOf("2019-05-12"), Date.valueOf("2015-05-12"), 62, 19.99, "shlik"));
+		try {
+			facade.addCoupon(new Coupon(facade.getCompanyDetails().getId(), Category.Technology, "couptitle", "desc434",
+					Date.valueOf("2019-05-12"), Date.valueOf("2015-05-12"), 62, 19.99, "shlik"));
+		} catch (DetailDuplicationException | WrongIdException e) {
+			e.printStackTrace();
+		}
 		System.out.print(" After - ");
 		List<Coupon> companyCoupons = facade.getCompanyCoupons();
 		System.out.println(companyCoupons);
@@ -58,8 +65,12 @@ public class CompanyFacadeTest {
 		System.out.println(Art.padTo80Stars(" Add Coupon (Fail - coupon.companyId not correct) "));
 		System.out.print("Before - ");
 		System.out.println(couponsDBDAO.getAllCoupons());
-		facade.addCoupon(new Coupon(facade.getCompanyDetails().getId()+1, Category.Technology, "couptitle", "desc434",
-				Date.valueOf("2019-05-12"), Date.valueOf("2015-05-12"), 62, 19.99, "shlik"));
+		try {
+			facade.addCoupon(new Coupon(facade.getCompanyDetails().getId()+1, Category.Technology, "couptitle", "desc434",
+					Date.valueOf("2019-05-12"), Date.valueOf("2015-05-12"), 62, 19.99, "shlik"));
+		} catch (DetailDuplicationException | WrongIdException e) {
+			System.out.println("Error Thrown - " + e.getMessage());
+		}
 		System.out.print(" After - ");
 		System.out.println(couponsDBDAO.getAllCoupons());
 
@@ -68,7 +79,11 @@ public class CompanyFacadeTest {
 		System.out.print("Before - ");
 		System.out.println(couponsDBDAO.getOneCoupon(tempCoupon.getId()));
 		tempCoupon.setCategory(Category.Restaurant);
-		facade.updateCoupon(tempCoupon);
+		try {
+			facade.updateCoupon(tempCoupon);
+		} catch (WrongIdException | DataManipulationException e) {
+			e.printStackTrace();
+		}
 		System.out.print(" After - ");
 		System.out.println(couponsDBDAO.getOneCoupon(tempCoupon.getId()));
 
@@ -77,28 +92,52 @@ public class CompanyFacadeTest {
 		System.out.print("Before - ");
 		System.out.println(couponsDBDAO.getOneCoupon(tempCoupon.getId()));
 		tempCoupon.setCategory(Category.Vacation);
-		tempCoupon.setCompanyId(facade.getCompanyDetails().getId()+1);
-		facade.updateCoupon(tempCoupon);
+		tempCoupon.setCompanyId(-1);
+		try {
+			facade.updateCoupon(tempCoupon);
+		} catch (WrongIdException | DataManipulationException e) {
+			System.out.println("Error Thrown - " + e.getMessage());
+		}
 		System.out.print(" After - ");
 		System.out.println(couponsDBDAO.getOneCoupon(tempCoupon.getId()));
 		tempCoupon.setCompanyId(facade.getCompanyDetails().getId());
 
 		int tempId = tempCoupon.getId();
-		tempCoupon.setId(4);
+		tempCoupon.setId(3);
 		System.out.println();
 		System.out.println(Art.padTo80Stars(" Delete Coupon (Fail - coupon doesn't belong to company) "));
 		System.out.print("Before - ");
 		System.out.println(couponsDBDAO.getAllCoupons());
-		facade.deleteCoupon(tempCoupon.getId());
+		try {
+			facade.deleteCoupon(tempCoupon.getId());
+		} catch (WrongIdException e) {
+			System.out.println("Error Thrown - " + e.getMessage());
+		}
 		System.out.print(" After - ");
 		System.out.println(couponsDBDAO.getAllCoupons());
 		tempCoupon.setId(tempId);
 		
 		System.out.println();
+		System.out.println(Art.padTo80Stars(" Delete Coupon (Fail, wrong id) "));
+		System.out.print("Before - ");
+		System.out.println(facade.getCompanyCoupons());
+		try {
+			facade.deleteCoupon(-1);
+		} catch (WrongIdException e) {
+			System.out.println("Error Thrown - " + e.getMessage());
+		}
+		System.out.print(" After - ");
+		System.out.println(facade.getCompanyCoupons());
+		
+		System.out.println();
 		System.out.println(Art.padTo80Stars(" Delete Coupon "));
 		System.out.print("Before - ");
 		System.out.println(facade.getCompanyCoupons());
-		facade.deleteCoupon(tempCoupon.getId());
+		try {
+			facade.deleteCoupon(tempCoupon.getId());
+		} catch (WrongIdException e) {
+			e.printStackTrace();
+		}
 		System.out.print(" After - ");
 		System.out.println(facade.getCompanyCoupons());
 	}
