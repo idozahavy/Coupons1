@@ -7,6 +7,7 @@ import com.coupons.beans.Company;
 import com.coupons.beans.Coupon;
 import com.coupons.exceptions.DataManipulationException;
 import com.coupons.exceptions.DetailDuplicationException;
+import com.coupons.exceptions.NotLoggedInExcepetion;
 import com.coupons.exceptions.WrongIdException;
 
 public class CompanyFacade extends ClientFacade {
@@ -23,7 +24,10 @@ public class CompanyFacade extends ClientFacade {
 		return false;
 	}
 
-	public void addCoupon(Coupon coupon) throws DetailDuplicationException, WrongIdException {
+	public void addCoupon(Coupon coupon) throws DetailDuplicationException, WrongIdException, NotLoggedInExcepetion {
+		if (couponsDBDAO == null) {
+			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
+		}
 		if (coupon.getCompanyId() == companyId) {
 			if (couponsDBDAO.canAddCoupon(coupon.getTitle(), coupon.getCompanyId())) {
 				couponsDBDAO.addCoupon(coupon);
@@ -35,7 +39,10 @@ public class CompanyFacade extends ClientFacade {
 		}
 	}
 
-	public void updateCoupon(Coupon coupon) throws WrongIdException, DataManipulationException {
+	public void updateCoupon(Coupon coupon) throws WrongIdException, DataManipulationException, NotLoggedInExcepetion {
+		if (couponsDBDAO == null) {
+			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
+		}
 		if (coupon.getCompanyId() == companyId) {
 			Coupon dbCoupon = couponsDBDAO.getOneCoupon(coupon.getId());
 			if (dbCoupon == null) {
@@ -54,7 +61,10 @@ public class CompanyFacade extends ClientFacade {
 		}
 	}
 
-	public void deleteCoupon(int couponId) throws WrongIdException {
+	public void deleteCoupon(int couponId) throws WrongIdException, NotLoggedInExcepetion {
+		if (couponsDBDAO == null) {
+			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
+		}
 		Coupon dbCoupon = couponsDBDAO.getOneCoupon(couponId);
 		if (dbCoupon == null) {
 			throw new WrongIdException("coupon id does not exist");
@@ -67,11 +77,17 @@ public class CompanyFacade extends ClientFacade {
 		}
 	}
 
-	public List<Coupon> getCompanyCoupons() {
+	public List<Coupon> getCompanyCoupons() throws NotLoggedInExcepetion {
+		if (couponsDBDAO == null) {
+			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
+		}
 		return couponsDBDAO.getCompanyCoupons(companyId);
 	}
 
-	public List<Coupon> getAllCouponsByCategory(Category category) {
+	public List<Coupon> getAllCouponsByCategory(Category category) throws NotLoggedInExcepetion {
+		if (couponsDBDAO == null) {
+			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
+		}
 		List<Coupon> coupons = getCompanyCoupons();
 		for (int i = 0; i < coupons.size(); i++) {
 			if (coupons.get(i).getCategory().equals(category) == false) {
@@ -81,7 +97,10 @@ public class CompanyFacade extends ClientFacade {
 		return coupons;
 	}
 
-	public List<Coupon> getAllCouponsByMaxPrice(int maxPrice) {
+	public List<Coupon> getAllCouponsByMaxPrice(int maxPrice) throws NotLoggedInExcepetion {
+		if (couponsDBDAO == null) {
+			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
+		}
 		List<Coupon> coupons = getCompanyCoupons();
 		for (int i = 0; i < coupons.size(); i++) {
 			if (coupons.get(i).getPrice() > maxPrice) {
@@ -91,7 +110,10 @@ public class CompanyFacade extends ClientFacade {
 		return coupons;
 	}
 
-	public Company getCompanyDetails() throws WrongIdException {
+	public Company getCompanyDetails() throws WrongIdException, NotLoggedInExcepetion {
+		if (couponsDBDAO == null) {
+			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
+		}
 		Company company = companiesDBDAO.getOneCompany(companyId);
 		if (company != null) {
 			return company;

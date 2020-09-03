@@ -9,6 +9,7 @@ import com.coupons.beans.Category;
 import com.coupons.beans.Coupon;
 import com.coupons.beans.Customer;
 import com.coupons.exceptions.DataManipulationException;
+import com.coupons.exceptions.NotLoggedInExcepetion;
 import com.coupons.exceptions.WrongIdException;
 
 public class CustomerFacade extends ClientFacade {
@@ -27,12 +28,18 @@ public class CustomerFacade extends ClientFacade {
 		
 	}
 
-	public void purchaseCoupon(Coupon coupon) throws DataManipulationException, WrongIdException {
+	public void purchaseCoupon(Coupon coupon) throws DataManipulationException, WrongIdException, NotLoggedInExcepetion {
+		if (couponsDBDAO == null) {
+			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
+		}
 		Coupon dbCoupon = couponsDBDAO.getOneCoupon(coupon.getId());
 		if (dbCoupon == null) {
 			throw new WrongIdException("coupon id does not exist");
 		}
-		boolean isCouponPurchaseExist = getCustomerCoupons().contains(coupon);
+		boolean isCouponPurchaseExist = false;
+		for (Coupon customerCoupon : getCustomerCoupons()) {
+			isCouponPurchaseExist |= customerCoupon.getId() == dbCoupon.getId();
+		}
 		boolean canBuyCoupon = dbCoupon.getAmount() > 0 && dbCoupon.getEndDate().after(Date.valueOf(LocalDate.now()));
 		if (isCouponPurchaseExist) {
 			throw new DataManipulationException("can not purchase coupon that customer already has");
@@ -46,12 +53,18 @@ public class CustomerFacade extends ClientFacade {
 		}
 	}
 
-	public List<Coupon> getCustomerCoupons() throws WrongIdException {
+	public List<Coupon> getCustomerCoupons() throws WrongIdException, NotLoggedInExcepetion {
+		if (couponsDBDAO == null) {
+			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
+		}
 		Customer customer = getCustomerDetails();
 		return customer.getCoupons();
 	}
 
-	public List<Coupon> getCustomerCoupons(Category category) throws WrongIdException {
+	public List<Coupon> getCustomerCoupons(Category category) throws WrongIdException, NotLoggedInExcepetion {
+		if (couponsDBDAO == null) {
+			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
+		}
 		List<Coupon> coupons = getCustomerCoupons();
 		for (int i = 0; i < coupons.size(); i++) {
 			if (coupons.get(i).getCategory().equals(category) == false) {
@@ -61,17 +74,23 @@ public class CustomerFacade extends ClientFacade {
 		return coupons;
 	}
 
-	public List<Coupon> getCustomerCoupons(double maxPrice) throws WrongIdException {
+	public List<Coupon> getCustomerCoupons(double maxPrice) throws WrongIdException, NotLoggedInExcepetion {
+		if (couponsDBDAO == null) {
+			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
+		}
 		List<Coupon> coupons = getCustomerCoupons();
 		for (int i = 0; i < coupons.size(); i++) {
-			if (coupons.get(i).getPrice() <= maxPrice) {
+			if (coupons.get(i).getPrice() > maxPrice) {
 				coupons.remove(i--);
 			}
 		}
 		return coupons;
 	}
 
-	public Customer getCustomerDetails() throws WrongIdException {
+	public Customer getCustomerDetails() throws WrongIdException, NotLoggedInExcepetion {
+		if (couponsDBDAO == null) {
+			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
+		}
 		Customer customer = customerDBDAO.getOneCustomer(customerId);
 		if (customer == null) {
 			throw new WrongIdException("customer id does not exist");

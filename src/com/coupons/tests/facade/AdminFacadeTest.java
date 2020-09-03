@@ -6,13 +6,14 @@ import com.coupons.beans.Company;
 import com.coupons.beans.Customer;
 import com.coupons.exceptions.DataManipulationException;
 import com.coupons.exceptions.DetailDuplicationException;
+import com.coupons.exceptions.NotLoggedInExcepetion;
 import com.coupons.exceptions.WrongIdException;
 import com.coupons.facade.AdminFacade;
 import com.coupons.tests.Art;
 
 public class AdminFacadeTest {
 
-	public static void main(String[] args) throws WrongIdException {
+	public static void main(String[] args) throws WrongIdException, NotLoggedInExcepetion {
 		System.out.println();
 		System.out.println(Art.stringToArtH1("AdminFacade Test"));
 
@@ -20,23 +21,23 @@ public class AdminFacadeTest {
 		AdminFacade facade = new AdminFacade();
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Login (Fail) "));
+		System.out.println(Art.padTo120Stars(" Login (Fail - wrong credentials) "));
 		System.out.println(facade.login("no", "yes"));
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Login (Success) "));
+		System.out.println(Art.padTo120Stars(" Login (Success) "));
 		System.out.println(facade.login("admin@admin.com", "admin"));
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Get All Companies "));
+		System.out.println(Art.padTo120Stars(" Get All Companies "));
 		System.out.println(facade.getAllCompanies());
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Get All Customers "));
+		System.out.println(Art.padTo120Stars(" Get All Customers "));
 		System.out.println(facade.getAllCustomers());
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Add Company "));
+		System.out.println(Art.padTo120Stars(" Add Company "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCompanies());
 		try {
@@ -50,7 +51,7 @@ public class AdminFacadeTest {
 		Company tempCompany = allCompanies.get(allCompanies.size() - 1);
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Add Company (Fail - exists) "));
+		System.out.println(Art.padTo120Stars(" Add Company (Fail - company name exists) "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCompanies());
 		try {
@@ -62,11 +63,11 @@ public class AdminFacadeTest {
 		System.out.println(facade.getAllCompanies());
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Get One Company "));
+		System.out.println(Art.padTo120Stars(" Get One Company "));
 		System.out.println(facade.getOneCompany(tempCompany.getId()));
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Update Company (email) "));
+		System.out.println(Art.padTo120Stars(" Update Company [email] "));
 		System.out.print("Before - ");
 		System.out.println(facade.getOneCompany(tempCompany.getId()));
 		tempCompany.setEmail("company_new2_Email");
@@ -79,7 +80,7 @@ public class AdminFacadeTest {
 		System.out.println(facade.getOneCompany(tempCompany.getId()));
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Update Company (email, name) (Fail - cannot change name) "));
+		System.out.println(Art.padTo120Stars(" Update Company [email, name] (Fail - cannot change name) "));
 		System.out.print("Before - ");
 		System.out.println(facade.getOneCompany(tempCompany.getId()));
 		tempCompany.setEmail("sabba.com_Email");
@@ -93,7 +94,7 @@ public class AdminFacadeTest {
 		System.out.println(facade.getOneCompany(tempCompany.getId()));
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Delete Company (Fail - id do not exist "));
+		System.out.println(Art.padTo120Stars(" Delete Company (Fail - id do not exist "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCompanies());
 		try {
@@ -105,7 +106,7 @@ public class AdminFacadeTest {
 		System.out.println(facade.getAllCompanies());
 		
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Delete Company "));
+		System.out.println(Art.padTo120Stars(" Delete Company "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCompanies());
 		try {
@@ -117,7 +118,7 @@ public class AdminFacadeTest {
 		System.out.println(facade.getAllCompanies());
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Add Customer "));
+		System.out.println(Art.padTo120Stars(" Add Customer "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCustomers());
 		try {
@@ -131,7 +132,7 @@ public class AdminFacadeTest {
 		Customer tempCustomer = allCustomers.get(allCustomers.size() - 1);
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Add Customer (Fail - existing email) "));
+		System.out.println(Art.padTo120Stars(" Add Customer (Fail - existing email) "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCustomers());
 		try {
@@ -143,11 +144,11 @@ public class AdminFacadeTest {
 		System.out.println(facade.getAllCustomers());
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Get One Customer "));
+		System.out.println(Art.padTo120Stars(" Get One Customer "));
 		System.out.println(facade.getOneCustomer(tempCustomer.getId()));
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Update Customer (email, firstname) "));
+		System.out.println(Art.padTo120Stars(" Update Customer [email, firstname] "));
 		System.out.print("Before - ");
 		System.out.println(facade.getOneCustomer(tempCustomer.getId()));
 		tempCustomer.setEmail("company_new2_Email");
@@ -163,7 +164,7 @@ public class AdminFacadeTest {
 		System.out.println(facade.getOneCustomer(tempCustomer.getId()));
 
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Delete Customer (Fail , no such id) "));
+		System.out.println(Art.padTo120Stars(" Delete Customer (Fail , no such id) "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCustomers());
 		try {
@@ -175,7 +176,7 @@ public class AdminFacadeTest {
 		System.out.println(facade.getAllCustomers());
 		
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Delete Customer "));
+		System.out.println(Art.padTo120Stars(" Delete Customer "));
 		System.out.print("Before - ");
 		System.out.println(facade.getAllCustomers());
 		try {

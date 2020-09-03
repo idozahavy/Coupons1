@@ -15,15 +15,15 @@ public class CategoryDBDAOTest {
 		CategoryDBDAO dbdao = new CategoryDBDAO();
 	
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Adding Category "));
+		System.out.println(Art.padTo120Stars(" Adding Category "));
 		dbdao.addCategory(Category.AI);
 		
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Getting Category 2 "));
+		System.out.println(Art.padTo120Stars(" Getting Category 2 "));
 		System.out.println(dbdao.getCategory(2));
 		
 		System.out.println();
-		System.out.println(Art.padTo80Stars(" Getting Category ID Computer "));
+		System.out.println(Art.padTo120Stars(" Getting Category ID Computer "));
 		System.out.println(dbdao.getCategoryId(Category.Computers));
 	}
 

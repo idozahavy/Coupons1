@@ -28,11 +28,11 @@ public class Art {
 	// big (ok size)
 	// banner3
 
-	public static String padTo80Stars(String str) {
-		if (str.length() >= 80)
+	public static String padTo120Stars(String str) {
+		if (str.length() >= 120)
 			return str;
 
-		int rightStars = (80 - str.length()) / 2;
+		int rightStars = (120 - str.length()) / 2;
 		int leftStars = rightStars;
 		if (str.length() % 2 == 1)
 			leftStars++;

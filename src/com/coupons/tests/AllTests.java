@@ -3,17 +3,32 @@ package com.coupons.tests;
 import java.sql.Date;
 
 import com.coupons.beans.*;
+import com.coupons.db.ConnectionPool;
+import com.coupons.db.DatabaseManager;
 import com.coupons.dbdao.*;
 
 public class AllTests {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {	
+		InitializeConnectionPool();
 		InitializeDB();
 		DBDAOTests.main(args);
 		FacadeTests.main(args);
+		LoginManagerTest.main(args);
 	}
 
+	private static void InitializeConnectionPool() {
+		System.out.println("Initializing ConnectionPool...");
+		ConnectionPool.getInstance();
+		System.out.println();
+		System.out.println("ConnectionPool Initialized");
+		System.out.println();
+	}
+	
 	private static void InitializeDB() {
+		DatabaseManager.DropAllTables();
+		DatabaseManager.CreateAllTables();
+		
 		addAllCompanies();
 		addAllCustomers();
 		addAllCoupons();
@@ -57,13 +72,13 @@ public class AllTests {
 
 	public static void addAllCoupons() {
 		CouponsDBDAO couponsDBDAO = new CouponsDBDAO();
-		Coupon coupon1 = new Coupon(0, 1, Category.Electricity, "first coupon", "first", Date.valueOf("2020-08-08"),
+		Coupon coupon1 = new Coupon(1, Category.Electricity, "first coupon", "first", Date.valueOf("2020-08-08"),
 				Date.valueOf("2020-12-16"), 50, 10.90, "blop");
-		Coupon coupon2 = new Coupon(0, 1, Category.Computers, "second coupon", "gro", Date.valueOf("2020-09-08"),
+		Coupon coupon2 = new Coupon(1, Category.Computers, "second coupon", "gro", Date.valueOf("2020-09-08"),
 				Date.valueOf("2020-12-18"), 40, 50.90, "blop");
-		Coupon coupon3 = new Coupon(0, 2, Category.AI, "third coupon", "shrik", Date.valueOf("2020-10-08"),
+		Coupon coupon3 = new Coupon(2, Category.AI, "third coupon", "shrik", Date.valueOf("2020-10-08"),
 				Date.valueOf("2020-12-10"), 30, 69.90, "blop");
-		Coupon coupon4 = new Coupon(0, 2, Category.Computers, "fourth coupon", "desc4", Date.valueOf("2020-11-08"),
+		Coupon coupon4 = new Coupon(2, Category.Computers, "fourth coupon", "desc4", Date.valueOf("2020-11-08"),
 				Date.valueOf("2020-12-11"), 20, 49.90, "blop");
 		couponsDBDAO.addCoupon(coupon1);
 		couponsDBDAO.addCoupon(coupon2);
@@ -73,10 +88,10 @@ public class AllTests {
 
 	private static void addAllCustomers() {
 		CustomerDBDAO customerDBDAO = new CustomerDBDAO();
-		Customer customer1 = new Customer(0, "person1", "last1", "mail1", "1", null);
-		Customer customer2 = new Customer(0, "person2", "last2", "mail2", "2", null);
-		Customer customer3 = new Customer(0, "person3", "last3", "mail3", "3", null);
-		Customer customer4 = new Customer(0, "person4", "last4", "mail4", "4", null);
+		Customer customer1 = new Customer("person1", "last1", "mail1", "1");
+		Customer customer2 = new Customer("person2", "last2", "mail2", "2");
+		Customer customer3 = new Customer("person3", "last3", "mail3", "3");
+		Customer customer4 = new Customer("person4", "last4", "mail4", "4");
 		customerDBDAO.addCustomer(customer1);
 		customerDBDAO.addCustomer(customer2);
 		customerDBDAO.addCustomer(customer3);

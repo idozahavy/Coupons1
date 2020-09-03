@@ -22,10 +22,8 @@ public class LoginManager {
 		default:
 			throw new RuntimeException("Switch case could not catch type " + clientType.toString());
 		}
-		if (facade.login(email, password)) {
-			return facade;
-		}
-		return null;
+		facade.login(email, password);
+		return facade;
 	}
 
 }
