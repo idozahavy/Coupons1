@@ -73,17 +73,20 @@ public class AllTests {
 	public static void addAllCoupons() {
 		CouponsDBDAO couponsDBDAO = new CouponsDBDAO();
 		Coupon coupon1 = new Coupon(1, Category.Electricity, "first coupon", "first", Date.valueOf("2020-08-08"),
-				Date.valueOf("2020-12-16"), 50, 10.90, "blop");
+				Date.valueOf("2020-12-16"), 50, 10.90, "fruit floopy");
 		Coupon coupon2 = new Coupon(1, Category.Computers, "second coupon", "gro", Date.valueOf("2020-09-08"),
-				Date.valueOf("2020-12-18"), 40, 50.90, "blop");
+				Date.valueOf("2020-12-18"), 40, 50.90, "sigmoid");
 		Coupon coupon3 = new Coupon(2, Category.AI, "third coupon", "shrik", Date.valueOf("2020-10-08"),
-				Date.valueOf("2020-12-10"), 30, 69.90, "blop");
-		Coupon coupon4 = new Coupon(2, Category.Computers, "fourth coupon", "desc4", Date.valueOf("2020-11-08"),
-				Date.valueOf("2020-12-11"), 20, 49.90, "blop");
+				Date.valueOf("2020-12-10"), 30, 69.90, "koka");
+		Coupon coupon4 = new Coupon(2, Category.Food, "outdated coupon", "out", Date.valueOf("2020-04-08"),
+				Date.valueOf("2020-08-11"), 20, 12.50, "no");
+		Coupon coupon5 = new Coupon(2, Category.Computers, "fourth coupon", "desc4", Date.valueOf("2020-11-08"),
+				Date.valueOf("2020-12-11"), 20, 49.90, "singaurd");
 		couponsDBDAO.addCoupon(coupon1);
 		couponsDBDAO.addCoupon(coupon2);
 		couponsDBDAO.addCoupon(coupon3);
 		couponsDBDAO.addCoupon(coupon4);
+		couponsDBDAO.addCoupon(coupon5);
 	}
 
 	private static void addAllCustomers() {

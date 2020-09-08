@@ -43,7 +43,7 @@ public class CouponsDBDAO implements CouponsDAO {
 	
 	private static final String GET_CUSTOMER_COUPONS_QUERY = "SELECT cp.* "
 			+ "FROM `coupons`.`coupons` AS cp, `coupons`.`customers_vs_coupons` AS cvc "
-			+ "WHERE cvc.`coupon_id` = cp.`id` "
+			+ "WHERE cp.`id` = cvc.`coupon_id` "
 			+ "AND cvc.`customer_id` = ?";
 	
 	private static final String GET_COMPANY_COUPONS_QUERY = "SELECT * "

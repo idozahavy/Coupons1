@@ -17,27 +17,28 @@ public class AdminFacade extends ClientFacade {
 			Initialize();
 			return true;
 		}
+		Deinitialize();
 		return false;
 	}
 
 	public void addCompany(Company company) throws DetailDuplicationException, NotLoggedInExcepetion {
-		if (couponsDBDAO == null) {
+		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}
-		if (companiesDBDAO.canAddCompany(company.getEmail(), company.getName())) {
-			companiesDBDAO.addCompany(company);
+		if (companiesDAO.canAddCompany(company.getEmail(), company.getName())) {
+			companiesDAO.addCompany(company);
 		} else {
 			throw new DetailDuplicationException("company already exist with email or name");
 		}
 	}
 
-	public void updateCompany(Company company) throws DataManipulationException, NotLoggedInExcepetion {
-		if (couponsDBDAO == null) {
+	public void updateCompany(Company company) throws DataManipulationException, NotLoggedInExcepetion, WrongIdException {
+		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}
-		Company dbComapny = companiesDBDAO.getOneCompany(company.getId());
+		Company dbComapny = companiesDAO.getOneCompany(company.getId());
 		if (dbComapny == null) {
-			return;
+			throw new WrongIdException("company id does not exist");
 		}
 		boolean isNameEquals = dbComapny.getName().equals(company.getName());
 		boolean isIdEquals = dbComapny.getId() == company.getId();
@@ -45,14 +46,14 @@ public class AdminFacade extends ClientFacade {
 		// dbComapny.getPassword().equals(company.getPassword()); // makes more sense
 		// than id == id
 		if (isNameEquals && isIdEquals) {
-			companiesDBDAO.updateCompany(company);
+			companiesDAO.updateCompany(company);
 		} else {
 			throw new DataManipulationException("can not change company name");
 		}
 	}
 
 	public void deleteCompany(int companyId) throws WrongIdException, NotLoggedInExcepetion {
-		if (couponsDBDAO == null) {
+		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}
 		Company dbCompany = getOneCompany(companyId);
@@ -60,24 +61,24 @@ public class AdminFacade extends ClientFacade {
 			throw new WrongIdException("company id does not exist");
 		}
 		for (Coupon cp : dbCompany.getCoupons()) {
-			couponsDBDAO.deleteCouponPurchases(cp.getId());
-			couponsDBDAO.deleteCoupon(cp.getId());
+			couponsDAO.deleteCouponPurchases(cp.getId());
+			couponsDAO.deleteCoupon(cp.getId());
 		}
-		companiesDBDAO.deleteCompany(companyId);
+		companiesDAO.deleteCompany(companyId);
 	}
 
 	public List<Company> getAllCompanies() throws NotLoggedInExcepetion {
-		if (couponsDBDAO == null) {
+		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}
-		return companiesDBDAO.getAllCompanies();
+		return companiesDAO.getAllCompanies();
 	}
 
 	public Company getOneCompany(int companyId) throws WrongIdException, NotLoggedInExcepetion {
-		if (couponsDBDAO == null) {
+		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}
-		Company company = companiesDBDAO.getOneCompany(companyId);
+		Company company = companiesDAO.getOneCompany(companyId);
 		if (company != null) {
 			return company;
 		} else {
@@ -86,26 +87,26 @@ public class AdminFacade extends ClientFacade {
 	}
 
 	public void addCustomer(Customer customer) throws DetailDuplicationException, NotLoggedInExcepetion {
-		if (couponsDBDAO == null) {
+		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}
-		if (customerDBDAO.canAddCustomer(customer.getEmail())) {
-			customerDBDAO.addCustomer(customer);
+		if (customerDAO.canAddCustomer(customer.getEmail())) {
+			customerDAO.addCustomer(customer);
 		} else {
 			throw new DetailDuplicationException("can not add customer with same email as others");
 		}
 	}
 
 	public void updateCustomer(Customer customer) throws WrongIdException, DataManipulationException, NotLoggedInExcepetion {
-		if (couponsDBDAO == null) {
+		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}
-		Customer dbCustomer = customerDBDAO.getOneCustomer(customer.getId());
+		Customer dbCustomer = customerDAO.getOneCustomer(customer.getId());
 		if (dbCustomer == null) {
 			throw new WrongIdException("customer id does not exist");
 		}
 		if (dbCustomer.getId() == customer.getId()) {
-			customerDBDAO.updateCustomer(customer);
+			customerDAO.updateCustomer(customer);
 		} else {
 			// wont get here anyway
 			throw new DataManipulationException("can not change customer id");
@@ -114,33 +115,33 @@ public class AdminFacade extends ClientFacade {
 	}
 
 	public void deleteCustomer(int customerId) throws WrongIdException, NotLoggedInExcepetion {
-		if (couponsDBDAO == null) {
+		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}
-		Customer dbCustomer = customerDBDAO.getOneCustomer(customerId);
+		Customer dbCustomer = customerDAO.getOneCustomer(customerId);
 		if (dbCustomer == null) {
 			throw new WrongIdException("customer id does not exist");
 		}
 		for (Coupon cp : dbCustomer.getCoupons()) {
-			couponsDBDAO.deleteCouponPurchase(customerId, cp.getId());
+			couponsDAO.deleteCouponPurchase(customerId, cp.getId());
 			cp.setAmount(cp.getAmount() + 1);
-			couponsDBDAO.updateCoupon(cp);
+			couponsDAO.updateCoupon(cp);
 		}
-		customerDBDAO.deleteCustomer(customerId);
+		customerDAO.deleteCustomer(customerId);
 	}
 
 	public List<Customer> getAllCustomers() throws NotLoggedInExcepetion {
-		if (couponsDBDAO == null) {
+		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}
-		return customerDBDAO.getAllCustomers();
+		return customerDAO.getAllCustomers();
 	}
 
 	public Customer getOneCustomer(int customerId) throws WrongIdException, NotLoggedInExcepetion {
-		if (couponsDBDAO == null) {
+		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}
-		Customer customer = customerDBDAO.getOneCustomer(customerId);
+		Customer customer = customerDAO.getOneCustomer(customerId);
 		if (customer != null) {
 			return customer;
 		} else {

@@ -25,7 +25,7 @@ public class LoginManagerTest {
 		}
 		
 		System.out.println();
-		System.out.println(Art.padTo120Stars(" Admin Login (Fail - wrong credentials "));
+		System.out.println(Art.padTo120Stars(" Admin Login (Fail - wrong credentials) "));
 		adminFacade = (AdminFacade)LoginManager.login("admin@admin.com", "8452", ClientType.ADMINISTRATOR);
 		System.out.println(Art.padTo120Stars(" Admin Login - getAllCompanies check "));
 		try {
@@ -37,7 +37,7 @@ public class LoginManagerTest {
 		System.out.println();
 		System.out.println(Art.padTo120Stars(" Company Login "));
 		CompanyFacade companyFacade = (CompanyFacade)LoginManager.login("myamd@cc.com", "2345", ClientType.COMPANY);
-		System.out.println(Art.padTo120Stars(" Company Login - getCompanyDetails check "));
+		System.out.println(Art.padTo120Stars(" getCompanyDetails check "));
 		try {
 			System.out.println(companyFacade.getCompanyDetails());
 		} catch (WrongIdException | NotLoggedInExcepetion e) {
@@ -45,9 +45,9 @@ public class LoginManagerTest {
 		}
 		
 		System.out.println();
-		System.out.println(Art.padTo120Stars(" Company Login (Fail - wrong credentials "));
+		System.out.println(Art.padTo120Stars(" Company Login (Fail - wrong credentials) "));
 		companyFacade = (CompanyFacade)LoginManager.login("myamd@cc.com", "1234", ClientType.COMPANY);
-		System.out.println(Art.padTo120Stars(" Company Login - getCompanyDetails check "));
+		System.out.println(Art.padTo120Stars(" getCompanyDetails check "));
 		try {
 			System.out.println(companyFacade.getCompanyDetails());
 		} catch (WrongIdException | NotLoggedInExcepetion e) {

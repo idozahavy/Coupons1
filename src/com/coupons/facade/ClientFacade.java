@@ -1,28 +1,27 @@
 package com.coupons.facade;
 
-import com.coupons.dbdao.CompaniesDBDAO;
-import com.coupons.dbdao.CouponsDBDAO;
-import com.coupons.dbdao.CustomerDBDAO;
+import com.coupons.dao.*;
+import com.coupons.dbdao.*;
 
 public abstract class ClientFacade {
-	protected CouponsDBDAO couponsDBDAO = null;
-	protected CompaniesDBDAO companiesDBDAO = null;
-	protected CustomerDBDAO customerDBDAO = null;
+	protected CouponsDAO couponsDAO = null;
+	protected CompaniesDAO companiesDAO = null;
+	protected CustomersDAO customerDAO = null;
 
 	public ClientFacade() {
 
 	}
 
 	protected void Initialize() {
-		couponsDBDAO = new CouponsDBDAO();
-		companiesDBDAO = new CompaniesDBDAO();
-		customerDBDAO = new CustomerDBDAO();
+		couponsDAO = new CouponsDBDAO();
+		companiesDAO = new CompaniesDBDAO();
+		customerDAO = new CustomerDBDAO();
 	}
 	
 	protected void Deinitialize() {
-		couponsDBDAO = null;
-		companiesDBDAO = null;
-		customerDBDAO = null;
+		couponsDAO = null;
+		companiesDAO = null;
+		customerDAO = null;
 	}
 
 

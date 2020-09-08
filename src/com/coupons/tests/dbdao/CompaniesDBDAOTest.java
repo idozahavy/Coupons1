@@ -2,7 +2,9 @@ package com.coupons.tests.dbdao;
 
 import com.coupons.beans.Company;
 import com.coupons.dbdao.CompaniesDBDAO;
+import com.coupons.dbdao.CouponsDBDAO;
 import com.coupons.tests.Art;
+import com.coupons.tests.Table100;
 
 public class CompaniesDBDAOTest {
 	public static void main(String[] args) {
@@ -10,6 +12,7 @@ public class CompaniesDBDAOTest {
 		System.out.println(Art.stringToArtH1("CompaniesDBDAO Test"));
 
 		System.out.println();
+		System.out.println(Art.padTo120Stars(" Get All Companies "));
 		CompaniesDBDAO dbdao = new CompaniesDBDAO();
 		System.out.println(dbdao.getAllCompanies());
 		
@@ -68,6 +71,11 @@ public class CompaniesDBDAOTest {
 		dbdao.deleteCompany(tempCompany.getId());
 		System.out.print(" After - ");
 		System.out.println(dbdao.getAllCompanies());
+		
+		Table100.print(dbdao.getAllCompanies());
+		Table100.print(new CouponsDBDAO().getAllCoupons());
 
+		Table100.print(tempCompany);
+		
 	}
 }

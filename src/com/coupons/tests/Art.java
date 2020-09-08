@@ -24,7 +24,6 @@ public class Art {
 	// doom (good) --------------------
 	// doh (huge)
 	// crazy (changing sized)
-	// blocks (big)
 	// big (ok size)
 	// banner3
 

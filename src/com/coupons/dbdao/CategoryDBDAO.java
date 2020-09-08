@@ -12,7 +12,7 @@ import com.coupons.db.ConnectionPool;
 
 public class CategoryDBDAO implements CategoryDAO {
 
-	private static final String ADD_CATEGORY_QUERY = "INSERT INTO `coupons`.`categories` " + "(`name`) VALUES(?)";
+	private static final String ADD_CATEGORY_QUERY = "INSERT INTO `coupons`.`categories` (`name`) VALUES(?)";
 
 	private static final String GET_CATEGORY_BY_ID_QUERY = "SELECT * FROM `coupons`.`categories` WHERE `id` = ?";
 
