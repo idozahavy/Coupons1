@@ -55,7 +55,7 @@ public class CompanyFacadeTest {
 			facade.addCoupon(new Coupon(facade.getCompanyDetails().getId(), Category.Technology, "couptitle", "desc434",
 					Date.valueOf("2019-05-12"), Date.valueOf("2015-05-12"), 62, 19.99, "shlik"));
 		} catch (DetailDuplicationException | WrongIdException e) {
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 		System.out.print(" After - ");
 		List<Coupon> companyCoupons = facade.getCompanyCoupons();
@@ -83,7 +83,7 @@ public class CompanyFacadeTest {
 		try {
 			facade.updateCoupon(tempCoupon);
 		} catch (WrongIdException | DataManipulationException e) {
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 		System.out.print(" After - ");
 		System.out.println(couponsDBDAO.getOneCoupon(tempCoupon.getId()));
@@ -137,7 +137,7 @@ public class CompanyFacadeTest {
 		try {
 			facade.deleteCoupon(tempCoupon.getId());
 		} catch (WrongIdException e) {
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 		System.out.print(" After - ");
 		System.out.println(facade.getCompanyCoupons());

@@ -13,10 +13,6 @@ public class CategoryDBDAOTest {
 
 		System.out.println();
 		CategoryDBDAO dbdao = new CategoryDBDAO();
-	
-		System.out.println();
-		System.out.println(Art.padTo120Stars(" Adding Category "));
-		dbdao.addCategory(Category.AI);
 		
 		System.out.println();
 		System.out.println(Art.padTo120Stars(" Getting Category 2 "));

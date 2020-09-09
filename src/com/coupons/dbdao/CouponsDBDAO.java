@@ -49,7 +49,6 @@ public class CouponsDBDAO implements CouponsDAO {
 	private static final String GET_COMPANY_COUPONS_QUERY = "SELECT * "
 			+ "FROM `coupons`.`coupons` "
 			+ "WHERE `company_id` = ? ";
-	
 
 	private Connection conn;
 

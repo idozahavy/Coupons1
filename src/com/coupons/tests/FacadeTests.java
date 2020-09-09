@@ -18,7 +18,7 @@ public class FacadeTests {
 			CompanyFacadeTest.main(args);
 			CustomerFacadeTest.main(args);
 		} catch (WrongIdException | NotLoggedInExcepetion e) {
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 	}
 

@@ -80,13 +80,16 @@ public class AllTests {
 				Date.valueOf("2020-12-10"), 30, 69.90, "koka");
 		Coupon coupon4 = new Coupon(2, Category.Food, "outdated coupon", "out", Date.valueOf("2020-04-08"),
 				Date.valueOf("2020-08-11"), 20, 12.50, "no");
-		Coupon coupon5 = new Coupon(2, Category.Computers, "fourth coupon", "desc4", Date.valueOf("2020-11-08"),
+		Coupon coupon5 = new Coupon(1, Category.Computers, "noAmountCoupon", "0amount", Date.valueOf("2020-12-03"),
+				Date.valueOf("2021-12-11"), 0, 90.90, "agid");
+		Coupon coupon6 = new Coupon(2, Category.Computers, "fourth coupon", "desc4", Date.valueOf("2020-11-08"),
 				Date.valueOf("2020-12-11"), 20, 49.90, "singaurd");
 		couponsDBDAO.addCoupon(coupon1);
 		couponsDBDAO.addCoupon(coupon2);
 		couponsDBDAO.addCoupon(coupon3);
 		couponsDBDAO.addCoupon(coupon4);
 		couponsDBDAO.addCoupon(coupon5);
+		couponsDBDAO.addCoupon(coupon6);
 	}
 
 	private static void addAllCustomers() {

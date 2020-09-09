@@ -3,6 +3,7 @@ package com.coupons;
 import com.coupons.db.ConnectionPool;
 import com.coupons.dbdao.CouponsDBDAO;
 import com.coupons.tests.AllTests;
+import com.coupons.tests.Table100;
 import com.coupons.timers.DatedCouponsTimer;
 
 @SuppressWarnings("unused")
@@ -11,8 +12,6 @@ public class Test {
 	public static void main(String[] args) throws InterruptedException {
 //		Admin
 //		---------------
-//		update non existant comapny
-//		delete non existant comapny
 //		delete company with coupons
 //
 //		update non existant customer
@@ -21,17 +20,17 @@ public class Test {
 //
 //		Company
 //		----------------
+//		---tables---
 //		adding an existing title in company
 //		update non existant coupon
 //		update coupon not in company
 //		changing coupon company id
-//
-//
-//		Customer
-//		-----------------
-//		purchase non existant coupon
-//		cant purchase becuase of amount/endDate
 
+		
+//		// Disables coupons attribute from showing in tables
+//		Table100.noShowFields.add("coupons");
+		
+		
 		AllTests.main(args);
 
 		CouponsDBDAO dbdao = new CouponsDBDAO();

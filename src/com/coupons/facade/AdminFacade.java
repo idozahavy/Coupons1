@@ -124,8 +124,8 @@ public class AdminFacade extends ClientFacade {
 		}
 		for (Coupon cp : dbCustomer.getCoupons()) {
 			couponsDAO.deleteCouponPurchase(customerId, cp.getId());
-			cp.setAmount(cp.getAmount() + 1);
-			couponsDAO.updateCoupon(cp);
+//			cp.setAmount(cp.getAmount() + 1);
+//			couponsDAO.updateCoupon(cp);
 		}
 		customerDAO.deleteCustomer(customerId);
 	}

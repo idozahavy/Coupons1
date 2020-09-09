@@ -5,7 +5,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-// v1.0.0
+// v1.0.4
 // dont try printing list of primitives such as: String or Integer --- NO!
 // prints only classes like beans with attributes/fields
 // used example:
@@ -13,24 +13,27 @@ import java.util.List;
 public class Table100 {
 	// can add here field names you dont want to show
 	// for example - List.of("id") wont show the field named 'id'
-	public static List<String> noShowFields = List.of();
+	public static List<String> noShowFields = new ArrayList<>(List.of()); // newly added
 
 	public static void print(Object item) {
 		if (item != null) {
-			print(List.of(item));
-		}
-		else {
-			throw new NullPointerException();
+			if (item.getClass().isPrimitive()) { // newlly added
+				System.out.println(item);
+			} else {
+				print(List.of(item));
+			}
+		} else {
+			System.out.println("null"); // newly added
 		}
 	}
 
 	public static void print(List<?> collection) {
-		if (collection.isEmpty() == true) {
+		if (collection.isEmpty()) {
 			System.out.println("empty collection");
 			return;
 		}
 		if (collection.get(0) == null) {
-			throw new NullPointerException("collection first item is null");
+			System.out.println("null");
 		}
 
 		Class<?> itemClass = collection.get(0).getClass();
