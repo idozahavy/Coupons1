@@ -30,6 +30,10 @@ public class CustomerFacadeTest {
 		System.out.println();
 		System.out.println(Art.padTo120Stars(" Login (Success) "));
 		System.out.println(facade.login("mail1", "1"));
+		
+		List<Coupon> allCoupons = couponsDBDAO.getAllCoupons();
+		Coupon couponPurchased = allCoupons.get(allCoupons.size() - 1);
+		couponsDBDAO.deleteCouponPurchase(facade.getCustomerDetails().getId(), couponPurchased.getId());
 
 		System.out.println();
 		System.out.println(Art.padTo120Stars(" Get Details "));
@@ -43,9 +47,6 @@ public class CustomerFacadeTest {
 
 		System.out.println(Art.padTo120Stars(" Get Customer Coupons Max Price 40 "));
 		Table100.print(facade.getCustomerCoupons(40));
-
-		List<Coupon> allCoupons = couponsDBDAO.getAllCoupons();
-		Coupon couponPurchased = allCoupons.get(allCoupons.size() - 1);
 
 		System.out.println(Art.padTo120Stars(" Purchase Coupon "));
 		System.out.println("Before Coupons - ");
@@ -67,6 +68,7 @@ public class CustomerFacadeTest {
 		Table100.print(facade.getCustomerCoupons());
 		try {
 			facade.purchaseCoupon(couponPurchased);
+			System.err.println("failed error------------------------------");
 		} catch (WrongIdException | DataManipulationException e) {
 			System.out.println("Error Thrown - " + e.getMessage());
 		}
@@ -77,6 +79,7 @@ public class CustomerFacadeTest {
 		try {
 			Coupon noCoupon = new Coupon(0, 0, Category.AI, "", "", new Date(0), new Date(0), 0, 0, "");
 			facade.purchaseCoupon(noCoupon);
+			System.err.println("failed error------------------------------");
 		} catch (WrongIdException | DataManipulationException e) {
 			System.out.println("Error Thrown - " + e.getMessage());
 		}
@@ -85,6 +88,7 @@ public class CustomerFacadeTest {
 		try {
 			Coupon noAmountCoupon = new Coupon(4, 0, Category.AI, "", "", new Date(0), new Date(0), 0, 0, "");
 			facade.purchaseCoupon(noAmountCoupon);
+			System.err.println("failed error------------------------------");
 		} catch (WrongIdException | DataManipulationException e) {
 			System.out.println("Error Thrown - " + e.getMessage());
 		}

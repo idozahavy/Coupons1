@@ -6,15 +6,32 @@ import com.coupons.beans.*;
 import com.coupons.db.ConnectionPool;
 import com.coupons.db.DatabaseManager;
 import com.coupons.dbdao.*;
+import com.coupons.jobs.DatedCouponsJob;
 
 public class AllTests {
 
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {	
+		CouponsDBDAO dbdao = new CouponsDBDAO();
+		
+		System.out.println(dbdao.getAllCoupons());
+		Thread t1 = new Thread(new DatedCouponsJob());
+		t1.start();
+		
 		InitializeConnectionPool();
 		InitializeDB();
 		DBDAOTests.main(args);
 		FacadeTests.main(args);
 		LoginManagerTest.main(args);
+		
+//		t1.interrupt();
+		t1.stop();
+		System.out.println(dbdao.getAllCoupons());
+		try {
+			ConnectionPool.getInstance().closeAllConnection();
+		} catch (InterruptedException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	private static void InitializeConnectionPool() {

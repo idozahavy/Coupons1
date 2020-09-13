@@ -1,9 +1,13 @@
 package com.coupons.tests.facade;
 
+import java.sql.Date;
 import java.util.List;
 
+import com.coupons.beans.Category;
 import com.coupons.beans.Company;
+import com.coupons.beans.Coupon;
 import com.coupons.beans.Customer;
+import com.coupons.dbdao.CouponsDBDAO;
 import com.coupons.exceptions.DataManipulationException;
 import com.coupons.exceptions.DetailDuplicationException;
 import com.coupons.exceptions.NotLoggedInExcepetion;
@@ -20,6 +24,7 @@ public class AdminFacadeTest {
 
 		System.out.println();
 		AdminFacade facade = new AdminFacade();
+		CouponsDBDAO couponsDBDAO = new CouponsDBDAO();
 
 		System.out.println();
 		System.out.println(Art.padTo120Stars(" Login (Fail - wrong credentials) "));
@@ -50,6 +55,7 @@ public class AdminFacadeTest {
 		System.out.println(Art.padTo120Stars(" Add Company (Fail - company name exists) "));
 		try {
 			facade.addCompany(new Company("adminCompany", "bjdfjk", "hashcodedpass"));
+			System.err.println("failed error------------------------------");
 		} catch (DetailDuplicationException e) {
 			System.out.println("Error Thrown - " + e.getMessage());
 		}
@@ -74,6 +80,7 @@ public class AdminFacadeTest {
 		tempCompany.setName("sucks to be me");
 		try {
 			facade.updateCompany(tempCompany);
+			System.err.println("failed error------------------------------");
 		} catch (DataManipulationException e) {
 			System.out.println("Error Thrown - " + e.getMessage());
 		}
@@ -87,6 +94,7 @@ public class AdminFacadeTest {
 		tempCompany.setPassword("sucks to be me");
 		try {
 			facade.updateCompany(tempCompany);
+			System.err.println("failed error------------------------------");
 		} catch (DataManipulationException | NotLoggedInExcepetion | WrongIdException e) {
 			System.out.println("Error Thrown - " + e.getMessage());
 		}
@@ -94,9 +102,15 @@ public class AdminFacadeTest {
 		Table100.print(facade.getAllCompanies());
 		tempCompany.setId(tempCouponId);
 
+		System.out.println(Art.padTo120Stars(" added 1 coupon to tempCompany for testings "));
+		couponsDBDAO.addCoupon(new Coupon(tempCompany.getId(), Category.AI, "DeepMind", "wow",
+				Date.valueOf("2017-08-10"), Date.valueOf("2025-08-10"), 1, 1 << 10, "aif"));
+		System.out.println();
+
 		System.out.println(Art.padTo120Stars(" Delete Company (Fail - company does not exist) "));
 		try {
 			facade.deleteCompany(-1);
+			System.err.println("failed error------------------------------");
 		} catch (WrongIdException e) {
 			System.out.println("Error Thrown - " + e.getMessage());
 		}
@@ -128,6 +142,7 @@ public class AdminFacadeTest {
 		System.out.println(Art.padTo120Stars(" Add Customer (Fail - existing email) "));
 		try {
 			facade.addCustomer(new Customer("firtstff", "mooooo", "shishkabab@fff.dd", "irdontrcare"));
+			System.err.println("failed error------------------------------");
 		} catch (DetailDuplicationException e) {
 			System.out.println("Error Thrown - " + e.getMessage());
 		}
@@ -137,6 +152,24 @@ public class AdminFacadeTest {
 		System.out.println(Art.padTo120Stars(" Get One Customer "));
 		Table100.print(facade.getOneCustomer(tempCustomer.getId()));
 
+		System.out.println(Art.padTo120Stars(" Get One Customer (Fail - customer id not exist) "));
+		try {
+			Table100.print(facade.getOneCustomer(-1));
+			System.err.println("failed error------------------------------");
+		} catch (WrongIdException e) {
+			System.out.println("Error Throw - " + e.getMessage());
+		}
+
+		System.out.println(Art.padTo120Stars(" Update Customer (Fail - customer does not exist) "));
+		try {
+			facade.updateCustomer(new Customer(-1, "aaa", "eee", "mail", "pass", null));
+			System.err.println("failed error------------------------------");
+		} catch (WrongIdException | DataManipulationException e) {
+			System.out.println("Error Thrown - " + e.getMessage());
+		}
+		System.out.println(" After - ");
+		Table100.print(facade.getAllCustomers());
+
 		System.out.println(Art.padTo120Stars(" Update Customer [email, firstname] "));
 		System.out.println("Before - ");
 		Table100.print(facade.getOneCustomer(tempCustomer.getId()));
@@ -145,14 +178,19 @@ public class AdminFacadeTest {
 		try {
 			facade.updateCustomer(tempCustomer);
 		} catch (WrongIdException | DataManipulationException e) {
-			System.out.println("Error Thrown - " + e.getMessage());
+			System.err.println("Error Thrown - " + e.getMessage());
 		}
 		System.out.println(" After - ");
 		Table100.print(facade.getOneCustomer(tempCustomer.getId()));
+		
+		System.out.println(Art.padTo120Stars(" added 1 coupon purchase to tempCustomer for testings "));
+		couponsDBDAO.addCouponPurchase(tempCustomer.getId(), 1);
+		System.out.println();
 
 		System.out.println(Art.padTo120Stars(" Delete Customer (Fail , no such id) "));
 		try {
 			facade.deleteCustomer(-1);
+			System.err.println("failed error------------------------------");
 		} catch (WrongIdException e) {
 			System.out.println("Error Thrown - " + e.getMessage());
 		}

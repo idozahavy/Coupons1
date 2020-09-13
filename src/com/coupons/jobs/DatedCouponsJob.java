@@ -1,17 +1,24 @@
-package com.coupons.timers;
+package com.coupons.jobs;
 
 import java.io.*;
-import java.sql.Date;
 import java.time.LocalDate;
+import java.sql.Date;
 import java.util.List;
 
 import com.coupons.beans.Coupon;
 import com.coupons.dao.CouponsDAO;
 import com.coupons.dbdao.CouponsDBDAO;
 
-public class DatedCouponsTimer implements Runnable {
+public class DatedCouponsJob implements Runnable {
 
 	private static final String FILE_NAME = "last_dated_coupons_check.txt";
+	
+	private CouponsDAO couponsDAO = null;
+	private volatile boolean quit = false;
+
+	public DatedCouponsJob() {
+		couponsDAO = new CouponsDBDAO();
+	}
 
 	public void run() {
 		do {
@@ -36,17 +43,21 @@ public class DatedCouponsTimer implements Runnable {
 				Thread.sleep(60 * 60 * 1000);
 			} catch (InterruptedException e) {
 			}
-		} while (true);
+		} while (quit == false);
 	}
+	
+	public void stop() {
+		quit = true;
+	}
+	
+	
 
 	private void clearOutdatedCoupons() {
-		CouponsDAO couponsDAO = new CouponsDBDAO();
 		List<Coupon> coupons = couponsDAO.getAllCoupons();
 		for (Coupon coupon : coupons) {
 			if (coupon.getEndDate().before(Date.valueOf(LocalDate.now()))) {
 				couponsDAO.deleteCouponPurchases(coupon.getId());
 				couponsDAO.deleteCoupon(coupon.getId());
-				System.out.println("deleted coupon id = " + coupon.getId());
 			}
 		}
 	}

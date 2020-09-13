@@ -43,21 +43,17 @@ public class CompanyFacade extends ClientFacade {
 		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}
-		if (coupon.getCompanyId() == companyId) {
-			Coupon dbCoupon = couponsDAO.getOneCoupon(coupon.getId());
-			if (dbCoupon == null) {
-				throw new WrongIdException("coupon id does not exist");
-			}
-			if (dbCoupon.getCompanyId() != companyId) {
-				throw new WrongIdException("you can not change a coupon that does not belong to your company");
-			}
-			if (dbCoupon.getCompanyId() == coupon.getCompanyId() && dbCoupon.getId() == coupon.getId()) {
-				couponsDAO.updateCoupon(coupon);
-			} else {
-				throw new DataManipulationException("you can not change coupon comapny id");
-			}
-		}else {
-			throw new WrongIdException("coupon company id does not match company id");
+		Coupon dbCoupon = couponsDAO.getOneCoupon(coupon.getId());
+		if (dbCoupon == null) {
+			throw new WrongIdException("coupon id does not exist");
+		}
+		if (dbCoupon.getCompanyId() != companyId) {
+			throw new WrongIdException("you can not change a coupon that does not belong to your company");
+		}
+		if (dbCoupon.getCompanyId() == coupon.getCompanyId() && dbCoupon.getId() == coupon.getId()) {
+			couponsDAO.updateCoupon(coupon);
+		} else {
+			throw new DataManipulationException("you can not change coupon comapny id");
 		}
 	}
 
@@ -84,7 +80,7 @@ public class CompanyFacade extends ClientFacade {
 		return couponsDAO.getCompanyCoupons(companyId);
 	}
 
-	public List<Coupon> getAllCouponsByCategory(Category category) throws NotLoggedInExcepetion {
+	public List<Coupon> getCompanyCoupons(Category category) throws NotLoggedInExcepetion {
 		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}
@@ -97,7 +93,7 @@ public class CompanyFacade extends ClientFacade {
 		return coupons;
 	}
 
-	public List<Coupon> getAllCouponsByMaxPrice(int maxPrice) throws NotLoggedInExcepetion {
+	public List<Coupon> getCompanyCoupons(int maxPrice) throws NotLoggedInExcepetion {
 		if (couponsDAO == null) {
 			throw new NotLoggedInExcepetion("you did not logged in properly - check your credentials");
 		}

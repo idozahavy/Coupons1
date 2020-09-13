@@ -27,5 +27,4 @@ public interface CouponsDAO {
 	void deleteCouponPurchase(int customerId, int couponId);
 	
 	void deleteCouponPurchases(int couponId);
-
 }
