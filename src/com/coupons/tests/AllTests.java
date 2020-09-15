@@ -11,26 +11,31 @@ import com.coupons.jobs.DatedCouponsJob;
 public class AllTests {
 
 	@SuppressWarnings("deprecation")
-	public static void main(String[] args) {	
-		CouponsDBDAO dbdao = new CouponsDBDAO();
+	public static void main(String[] args) {
 		
-		System.out.println(dbdao.getAllCoupons());
+		CouponsDBDAO dbdao = new CouponsDBDAO();
 		Thread t1 = new Thread(new DatedCouponsJob());
-		t1.start();
 		
 		InitializeConnectionPool();
 		InitializeDB();
+		
+		t1.start();
+		System.out.println();
+		System.out.println(Art.padTo120Stars(" after starting DatedCouponsJob "));
+		Table100.print(dbdao.getAllCoupons());
+		
 		DBDAOTests.main(args);
 		FacadeTests.main(args);
 		LoginManagerTest.main(args);
 		
-//		t1.interrupt();
 		t1.stop();
-		System.out.println(dbdao.getAllCoupons());
+		System.out.println();
+		System.out.println(Art.padTo120Stars(" after stopping DatedCouponsJob "));
+		Table100.print(dbdao.getAllCoupons());
 		try {
 			ConnectionPool.getInstance().closeAllConnection();
 		} catch (InterruptedException e) {
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 	}
 

@@ -10,7 +10,7 @@ import com.coupons.dbdao.CategoryDBDAO;
 public class DatabaseManager {
 
 	private static final String URL = "jdbc:mysql://localhost:3306/coupons?"
-			+ "createDatabaseIfNotExist=TRUE&useTimezone=TRUE&serverTimezone=UTC";
+			+ "createDatabaseIfNotExist=TRUE&useTimezone=TRUE&serverTimezone=Asia/Jerusalem"; // Asia/Jerusalem fixes sql.Date offset
 
 	private static final String USER = "root";
 

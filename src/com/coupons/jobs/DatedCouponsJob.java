@@ -12,7 +12,7 @@ import com.coupons.dbdao.CouponsDBDAO;
 public class DatedCouponsJob implements Runnable {
 
 	private static final String FILE_NAME = "last_dated_coupons_check.txt";
-	
+
 	private CouponsDAO couponsDAO = null;
 	private volatile boolean quit = false;
 
@@ -20,6 +20,10 @@ public class DatedCouponsJob implements Runnable {
 		couponsDAO = new CouponsDBDAO();
 	}
 
+	/*
+	 * reads file 'FILE_NAME' and finds the last date that the check was occured, if
+	 * before today starts deleting outdated coupons.
+	 */
 	public void run() {
 		do {
 			synchronized (this.getClass()) {
@@ -45,12 +49,10 @@ public class DatedCouponsJob implements Runnable {
 			}
 		} while (quit == false);
 	}
-	
+
 	public void stop() {
 		quit = true;
 	}
-	
-	
 
 	private void clearOutdatedCoupons() {
 		List<Coupon> coupons = couponsDAO.getAllCoupons();
@@ -88,5 +90,4 @@ public class DatedCouponsJob implements Runnable {
 		}
 		return null;
 	}
-
 }

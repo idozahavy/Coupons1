@@ -134,8 +134,6 @@ public class CompanyFacadeTest {
 		} catch (WrongIdException | DataManipulationException e) {
 			System.out.println("Error Thrown - " + e.getMessage());
 		}
-		System.out.println(" After - ");
-		Table100.print(facade.getCompanyCoupons());
 		tempCoupon.setId(tempCouponId);
 
 		tempCoupon.setId(3);
@@ -161,7 +159,7 @@ public class CompanyFacadeTest {
 			System.out.println("Error Thrown - " + e.getMessage());
 		}
 		System.out.println(" After - ");
-		Table100.print(facade.getCompanyCoupons());
+		Table100.print(couponsDBDAO.getAllCoupons());
 
 		System.out.println(Art.padTo120Stars(" Delete Coupon "));
 		try {
