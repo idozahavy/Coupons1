@@ -65,7 +65,7 @@ public class CompanyFacadeTest {
 					Date.valueOf("2019-05-12"), Date.valueOf("2015-05-12"), 62, 19.99, "shlik"));
 			System.err.println("failed error------------------------------");
 		} catch (DetailDuplicationException | WrongIdException e) {
-			System.out.println(e.getMessage());
+			System.out.println("Error Thrown - " + e.getMessage());
 		}
 		System.out.println(" After - ");
 		Table100.print(facade.getCompanyCoupons());
